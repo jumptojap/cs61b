@@ -4,18 +4,36 @@ import java.util.Formatter;
  * A naked recursive list of integers, similar to what we saw in lecture 3, but
  * with a large number of additional methods.
  *
- * @author P. N. Hilfinger, with some modifications by Josh Hug and melaniecebula
+ * @author P. N. Hilfinger, with some modifications by
+ * Josh Hug and melaniecebula
  *         [Do not modify this file.]
  */
 public class IntList {
     /**
      * First element of list.
      */
-    public int first;
+    private int first;
     /**
      * Remaining elements of list.
      */
-    public IntList rest;
+    private IntList rest;
+    /*
+    * */
+    public int getFirst() {
+        return first;
+    }
+
+    public void setFirst(int first) {
+        this.first = first;
+    }
+
+    public IntList getRest() {
+        return rest;
+    }
+
+    public void setRest(IntList rest) {
+        this.rest = rest;
+    }
 
     /**
      * A List with first FIRST0 and rest REST0.
@@ -81,8 +99,21 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        IntList res = A;
+        if(res == null)
+            return B;
+        IntList prev = A;
+        A = A.rest;
+        while(A != null){
+            prev = prev.rest;
+            A = A.rest;
+        }
+        while(B != null){
+            prev.rest = B;
+            prev = prev.rest;
+            B = B.rest;
+        }
+        return res;
     }
 
     /**
@@ -90,8 +121,21 @@ public class IntList {
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        IntList res = new IntList();
+        IntList prev = res;
+        while(A != null){
+            IntList temp = new IntList(A.first, A.rest);
+            prev.rest = temp;
+            A = A.rest;
+            prev = prev.rest;
+        }
+        while(B != null){
+            IntList temp = new IntList(B.first, B.rest);
+            prev.rest = temp;
+            B = B.rest;
+            prev = prev.rest;
+        }
+        return res.rest;
     }
 
 
@@ -175,7 +219,6 @@ public class IntList {
      * an IntList into a String and that IntList has a loop, your computer
      * doesn't get stuck in an infinite loop.
      */
-
     private int detectCycles(IntList A) {
         IntList tortoise = A;
         IntList hare = A;
