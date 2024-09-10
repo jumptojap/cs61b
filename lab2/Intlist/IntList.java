@@ -103,15 +103,15 @@ public class IntList {
         if(res == null)
             return B;
         IntList prev = A;
-        A = A.rest;
+        A = A.getRest();
         while(A != null){
-            prev = prev.rest;
-            A = A.rest;
+            prev = prev.getRest();
+            A = A.getRest();
         }
         while(B != null){
-            prev.rest = B;
-            prev = prev.rest;
-            B = B.rest;
+            prev.setRest(B);
+            prev = prev.getRest();
+            B = B.getRest();
         }
         return res;
     }
@@ -124,18 +124,18 @@ public class IntList {
         IntList res = new IntList();
         IntList prev = res;
         while(A != null){
-            IntList temp = new IntList(A.first, A.rest);
-            prev.rest = temp;
-            A = A.rest;
-            prev = prev.rest;
+            IntList temp = new IntList(A.getFirst(), A.getRest());
+            prev.setRest(temp);
+            A = A.getRest();
+            prev = prev.getRest();
         }
         while(B != null){
-            IntList temp = new IntList(B.first, B.rest);
-            prev.rest = temp;
-            B = B.rest;
-            prev = prev.rest;
+            IntList temp = new IntList(B.getFirst(), B.getRest());
+            prev.setRest(temp);
+            B = B.getRest();
+            prev = prev.getRest();
         }
-        return res.rest;
+        return res.getRest();
     }
 
 
