@@ -12,11 +12,11 @@ public class IntList {
     /**
      * First element of list.
      */
-    private int first;
+    public int first;
     /**
      * Remaining elements of list.
      */
-    private IntList rest;
+    public IntList rest;
     /*
     * */
     public int getFirst() {
