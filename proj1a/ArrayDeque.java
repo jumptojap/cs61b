@@ -83,6 +83,10 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
+        if (size == 1) {
+            size = 0;
+            return arr[first];
+        }
         int newSize = size - 1;
         if (!check(len, newSize)) {
             if (size < 0) {
@@ -99,6 +103,10 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
+        if (size == 1) {
+            size = 0;
+            return arr[first];
+        }
         int newSize = size - 1;
         if (!check(len, newSize)) {
             if (size < 0) {
