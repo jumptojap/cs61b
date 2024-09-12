@@ -108,7 +108,7 @@ public class ArrayDeque<T> {
             first = last;
         }
         size = nsize;
-        return arr[first];
+        return arr[last];
     }
 
 }
