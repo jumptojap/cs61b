@@ -22,14 +22,16 @@ public class ArrayDeque<T> {
         len = 8;
     }
 
-    private boolean check(int len, int size) {
-        if (size > len || size < 0) {
+    private boolean check(int l, int s) {
+        if (s > l || s < 0) {
             return false;
-        }
-        if (len < 16 || size * 4 >= len) {
-            return true;
         } else {
-            return false;
+            if (l < 16) {
+                return true;
+            } else {
+                return s * 4 >= l;
+            }
+
         }
     }
 
@@ -112,6 +114,15 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index) {
+        if (index < 0 || index >= len) {
+            return null;
+        }
+        if (first > last && index > last && index < first) {
+            return null;
+        }
+        if (first <= last && index < first || index > last) {
+            return null;
+        }
         return arr[(first + index) % index];
     }
 }
