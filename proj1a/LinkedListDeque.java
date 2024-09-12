@@ -1,5 +1,3 @@
-import java.util.List;
-
 /**
  * ClassName: LinkedListDeque
  * Package: PACKAGE_NAME
@@ -33,6 +31,9 @@ public class LinkedListDeque<T> {
     }
 
     public T removeFirst() {
+        if (this.size == 0) {
+            return null;
+        }
         ListNode<T> node = this.first.getNext();
         this.first.setNext(node.next);
         node.next.setPrior(first);
@@ -41,7 +42,11 @@ public class LinkedListDeque<T> {
         this.size--;
         return node.getData();
     }
+
     public T removeLast() {
+        if (this.size == 0) {
+            return null;
+        }
         ListNode<T> node = this.last.getPrior();
         this.last.setPrior(node.prior);
         node.prior.setNext(last);
@@ -53,33 +58,37 @@ public class LinkedListDeque<T> {
 
     public void printDeque() {
         ListNode temp = first.getNext();
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             System.out.print(temp.getData());
             temp = temp.getNext();
-            if(i != size - 1){
+            if (i != size - 1) {
                 System.out.print(' ');
             }
         }
     }
-    public T get(int index){
+
+    public T get(int index) {
         ListNode<T> temp = first;
-        for(int i = 0; i <= index; i++){
+        for (int i = 0; i <= index; i++) {
             temp = temp.getNext();
         }
         return temp.getData();
     }
-    public T getRecursive(int index){
+
+    public T getRecursive(int index) {
         return recur(index, first.getNext()).getData();
     }
-    public ListNode<T> recur(int index, ListNode node){
-        if(index == 0)
+
+    private ListNode<T> recur(int index, ListNode node) {
+        if (index == 0) {
             return node;
-        else
+        } else {
             return recur(index - 1, node.getNext());
+        }
     }
 
 
-    public class ListNode<T>{
+    private class ListNode<T> {
         ListNode<T> next;
         ListNode<T> prior;
         T data;
@@ -114,14 +123,16 @@ public class LinkedListDeque<T> {
             this.data = data;
         }
     }
-    public LinkedListDeque(){
+
+    public LinkedListDeque() {
         this.size = 0;
         this.first = new ListNode<>(null, null, null);
         this.last = new ListNode<>(null, null, null);
         this.first.setNext(this.last);
         this.last.setPrior(this.first);
     }
-    public int size(){
+
+    public int size() {
         return this.size;
     }
 
