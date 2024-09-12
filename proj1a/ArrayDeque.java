@@ -144,6 +144,6 @@ public class ArrayDeque<T> {
         if (first <= last && index < first || index > last) {
             return null;
         }
-        return arr[(first + index) % index];
+        return arr[(first + index) % len];
     }
 }
