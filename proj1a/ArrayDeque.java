@@ -37,13 +37,21 @@ public class ArrayDeque<T> {
 
     private void copyArr() {
         T[] temp = (T[]) new Object[len];
-        for (int i = 0; i < arr.length; i++) {
-            temp[i] = arr[i];
+        int t = first;
+        first = first % len;
+        last = (t + size - 1) % len;
+        for (int i = 0; i < size; i++) {
+            temp[(t + i) % len] = arr[(i + t) % arr.length];
         }
         arr = temp;
     }
 
     public void addFirst(T item) {
+        if (size == 0) {
+            arr[first] = item;
+            size = 1;
+            return;
+        }
         int newSize = size + 1;
         if (!check(len, newSize)) {
             len = newSize * 4;
@@ -55,6 +63,11 @@ public class ArrayDeque<T> {
     }
 
     public void addLast(T item) {
+        if (size == 0) {
+            arr[last] = item;
+            size = 1;
+            return;
+        }
         int newSize = size + 1;
         if (!check(len, newSize)) {
             len = newSize * 4;
@@ -106,7 +119,7 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
-        for (int i = first; i == last; i = (i + 1) % len) {
+        for (int i = first; i != last; i = (i + 1) % len) {
             System.out.print(arr[i]);
             System.out.println(' ');
         }
