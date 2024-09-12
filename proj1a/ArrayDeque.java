@@ -10,140 +10,105 @@
 public class ArrayDeque<T> {
     private T[] arr;
     private int size;
+    private int capacity;
     private int first;
     private int last;
-    private int len;
-
     public ArrayDeque() {
         arr = (T[]) new Object[8];
         size = 0;
-        first = 0;
-        last = 0;
-        len = 8;
+        capacity = 8;
+        first = last = 0;
     }
-
-    private boolean check(int l, int s) {
-        if (s > l || s < 0) {
-            return false;
-        } else {
-            if (l < 16) {
-                return true;
-            } else {
-                return s * 4 >= l;
-            }
-
-        }
-    }
-
-    private void copyArr() {
-        T[] temp = (T[]) new Object[len];
-        int t = first;
-        first = first % len;
-        last = (t + size - 1) % len;
-        for (int i = 0; i < size; i++) {
-            temp[(t + i) % len] = arr[(i + t) % arr.length];
-        }
-        arr = temp;
-    }
-
-    public void addFirst(T item) {
-        if (size == 0) {
-            arr[first] = item;
-            size = 1;
-            return;
-        }
-        int newSize = size + 1;
-        if (!check(len, newSize)) {
-            len = newSize * 4;
-            copyArr();
-        }
-        first = (first - 1 + len) % len;
-        arr[first] = item;
-        size = newSize;
-    }
-
-    public void addLast(T item) {
-        if (size == 0) {
-            arr[last] = item;
-            size = 1;
-            return;
-        }
-        int newSize = size + 1;
-        if (!check(len, newSize)) {
-            len = newSize * 4;
-            copyArr();
-        }
-        last = (last + 1) % len;
-        arr[last] = item;
-        size = newSize;
-    }
-
-    public boolean isEmpty() {
+    public boolean isEmpty(){
         return size == 0;
     }
-
-    public T removeFirst() {
-        if (size == 1) {
-            size = 0;
-            return arr[first];
-        }
-        int newSize = size - 1;
-        if (!check(len, newSize)) {
-            if (size < 0) {
-                return null;
-            } else {
-                len = newSize * 4;
-                copyArr();
-            }
-        }
-        T res = arr[first];
-        first = (first + 1) % len;
-        size = newSize;
-        return res;
-    }
-
-    public T removeLast() {
-        if (size == 1) {
-            size = 0;
-            return arr[first];
-        }
-        int newSize = size - 1;
-        if (!check(len, newSize)) {
-            if (size < 0) {
-                return null;
-            } else {
-                len = newSize * 4;
-                copyArr();
-            }
-        }
-        T res = arr[last];
-        last = (last - 1 + len) % len;
-        size = newSize;
-        return res;
-    }
-
-    public int size() {
+    public int size(){
         return size;
     }
-
-    public void printDeque() {
-        for (int i = first; i != last; i = (i + 1) % len) {
-            System.out.print(arr[i]);
-            System.out.println(' ');
+    public void printDeque(){
+        int st = (first + 1) % capacity;
+        for(int i = 0; i < size; i++){
+            System.out.print(arr[st]);
+            st = (st + 1) % capacity;
+            if(i != size - 1){
+                System.out.print(' ');
+            }
         }
-        System.out.print(arr[last]);
+    }
+    public T get(int index){
+        int st = (first + 1) % capacity;
+        for(int i = 0; i < index - 1; i++){
+            st = (st + 1) % capacity;
+        }
+        return arr[st];
     }
 
-    public T get(int index) {
-        if (index < 0 || index >= len) {
-            return null;
+    private void resize(int nsize){
+        int ccapacity = capacity;
+        int st = (first + 1) % ccapacity;
+        capacity = nsize * 4;
+        T[] temp = (T[]) new Object[capacity];
+        for(int i = 0; i < size; i++){
+            temp[i] = arr[st];
+            st = (st + 1) % ccapacity;
         }
-        if (first > last && index > last && index < first) {
-            return null;
-        }
-        if (first <= last && index < first || index > last) {
-            return null;
-        }
-        return arr[(first + index) % len];
+        first = capacity - 1;
+        last = size;
+        arr = temp;
     }
+    public void addFirst(T item){
+        int nsize = size + 1;
+        if(nsize > capacity){
+            resize(nsize);
+        }
+        arr[first] = item;
+        first = (first - 1 + capacity) % capacity;
+        if(nsize == 1){
+            last = (last + 1) % capacity;
+        }
+        size = nsize;
+    }
+    public void addLast(T item){
+        int nsize = size + 1;
+        if(nsize > capacity){
+            resize(nsize);
+        }
+        arr[last] = item;
+        last = (last + 1) % capacity;
+        if(nsize == 1){
+            first = (first - 1 + capacity) % capacity;
+        }
+        size = nsize;
+    }
+    public T removeFirst(){
+        int nsize = size - 1;
+        if(nsize < 0){
+            return null;
+        }
+        if(capacity >= 16 && 4 * nsize < capacity){
+            resize(nsize);
+        }
+        first = (first + 1) % capacity;
+        if(nsize == 0){
+            last = first;
+        }
+        size = nsize;
+        return arr[first];
+    }
+    public T removeLast(){
+        int nsize = size - 1;
+        if(nsize < 0){
+            return null;
+        }
+        if(capacity >= 16 && 4 * nsize < capacity){
+            resize(nsize);
+        }
+        last = (last - 1 + capacity) % capacity;
+        if(nsize == 0){
+            first = last;
+        }
+        size = nsize;
+        return arr[first];
+    }
+
 }
