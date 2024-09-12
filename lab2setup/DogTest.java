@@ -11,6 +11,7 @@ public class DogTest {
     @Test
     public void testLarge() {
         Dog d = new Dog(20);
+        System.out.println();
         assertEquals("bark", d.noise());
     }
 }
