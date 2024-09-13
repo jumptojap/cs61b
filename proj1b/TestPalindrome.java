@@ -15,22 +15,28 @@ public class TestPalindrome {
             actual += d.removeFirst();
         }
         assertEquals("persiflage", actual);
-    } /*Uncomment this class once you've created your Palindrome class. */
-
-    @Test
-    public void testIsPalindrome() {
-        assertTrue(palindrome.isPalindrome("absddsba"));
-        assertTrue(palindrome.isPalindrome("a"));
-        assertTrue(palindrome.isPalindrome(""));
-        assertFalse(palindrome.isPalindrome("asdfjdfhjad"));
     }
 
     @Test
-    public void testIsPalindromeDif1() {
-        CharacterComparator cc = new OffByOne();
-        assertTrue(palindrome.isPalindrome("bcsddsba", cc));
+    public void testisPalindrome() {
+        assertFalse(palindrome.isPalindrome("cat"));
+        assertTrue(palindrome.isPalindrome(""));
+        assertTrue(palindrome.isPalindrome("c"));
+        assertTrue(palindrome.isPalindrome("noon"));
+        assertTrue(palindrome.isPalindrome("AbabaababA"));
+        assertFalse(palindrome.isPalindrome("ffffFFFF"));
+        assertTrue(palindrome.isPalindrome("racecar"));
+        assertFalse(palindrome.isPalindrome("raceCaR"));
+    }
+
+    static CharacterComparator cc = new OffByOne();
+
+    @Test
+    public void testisPalindrome2() {
+        assertTrue(palindrome.isPalindrome("flake", cc));
+        assertTrue(palindrome.isPalindrome("%lak&", cc));
         assertTrue(palindrome.isPalindrome("a", cc));
-        assertTrue(palindrome.isPalindrome("", cc));
-        assertFalse(palindrome.isPalindrome("asdfjdfhjad", cc));
+        assertFalse(palindrome.isPalindrome("ak", cc));
+        assertTrue(palindrome.isPalindrome("tufts", cc));
     }
 }
