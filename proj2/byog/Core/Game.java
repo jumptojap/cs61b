@@ -59,7 +59,7 @@ public class Game {
         //TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
 
         //TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
+        //ter.initialize(WIDTH, HEIGHT);
 
         // initialize tiles
         TETile[][] world = new TETile[WIDTH][HEIGHT];
@@ -75,7 +75,7 @@ public class Game {
 
         generateHallway(world);
         // draws the world to the screen
-        ter.renderFrame(world);
+        //ter.renderFrame(world);
 
         return world;
     }
