@@ -25,7 +25,7 @@ public class Game {
 
     public void playWithKeyboard() {
         // initialize the tile rendering engine with a window of size WIDTH x HEIGHT
-        TERenderer ter = new TERenderer();
+        //TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
 
         // initialize tiles
@@ -68,8 +68,8 @@ public class Game {
         random = new Random(seed);
         //TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
 
-        TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
+        //TERenderer ter = new TERenderer();
+        //ter.initialize(WIDTH, HEIGHT);
 
         // initialize tiles
         TETile[][] world = new TETile[WIDTH][HEIGHT];
@@ -87,7 +87,7 @@ public class Game {
         }*/
         generateHallway(world);
         // draws the world to the screen
-        ter.renderFrame(world);
+        //ter.renderFrame(world);
 
         return world;
     }
@@ -108,11 +108,14 @@ public class Game {
             Room rightRoom = rooms.get(i + 1);
             List<Point> points = new ArrayList<>();
             //房间，扩容一圈
-            if (leftRoom.getxLeftBottomPoint() + leftRoom.getWidth() < rightRoom.getxLeftBottomPoint() - 1) {
+            if (leftRoom.getxLeftBottomPoint()
+                    + leftRoom.getWidth() < rightRoom.getxLeftBottomPoint() - 1) {
                 int x1 = leftRoom.getxLeftBottomPoint() + leftRoom.getWidth() - 1;
-                int y1 = random.nextInt(leftRoom.getHeight() - 2) + leftRoom.getyLeftBottomPoint() + 1;
+                int y1 = random.nextInt(leftRoom.getHeight() - 2)
+                        + leftRoom.getyLeftBottomPoint() + 1;
                 int x2 = rightRoom.getxLeftBottomPoint();
-                int y2 = random.nextInt(rightRoom.getHeight() - 2) + rightRoom.getyLeftBottomPoint() + 1;
+                int y2 = random.nextInt(rightRoom.getHeight() - 2)
+                        + rightRoom.getyLeftBottomPoint() + 1;
 
                 int xSlide = x1 + 1 + random.nextInt(x2 - x1 - 1);
                 for (int j = x1; j <= xSlide; j++) {
@@ -132,15 +135,18 @@ public class Game {
                     world[xSlide][j] = Tileset.FLOOR;
                 }
             } else {
-                if (leftRoom.getyLeftBottomPoint() + leftRoom.getHeight() >= rightRoom.getyLeftBottomPoint() - 1) {
+                if (leftRoom.getyLeftBottomPoint() + leftRoom.getHeight()
+                        >= rightRoom.getyLeftBottomPoint() - 1) {
                     Room temp = rightRoom;
                     rightRoom = leftRoom;
                     leftRoom = temp;
                 }
                 int y1 = leftRoom.getyLeftBottomPoint() + leftRoom.getHeight() - 1;
-                int x1 = random.nextInt(leftRoom.getWidth() - 2) + leftRoom.getxLeftBottomPoint() + 1;
+                int x1 = random.nextInt(leftRoom.getWidth() - 2)
+                        + leftRoom.getxLeftBottomPoint() + 1;
                 int y2 = rightRoom.getyLeftBottomPoint();
-                int x2 = random.nextInt(rightRoom.getWidth() - 2) + rightRoom.getxLeftBottomPoint() + 1;
+                int x2 = random.nextInt(rightRoom.getWidth() - 2)
+                        + rightRoom.getxLeftBottomPoint() + 1;
 
                 int ySlide = y1 + 1 + random.nextInt(y2 - y1 - 1);
                 for (int j = y1; j <= ySlide; j++) {
@@ -246,7 +252,6 @@ public class Game {
         }
 
 
-
         @Override
         public int compareTo(Room o) {
             if (this.getxLeftBottomPoint() - o.getxLeftBottomPoint() != 0) {
@@ -262,7 +267,8 @@ public class Game {
         int count = 0;
         do {
             room = new Room(random.nextInt(UPPERHEIGHTOFROOM - 4) + 4,
-                    random.nextInt(UPPERWIDTHOFROOM - 4) + 4, random.nextInt(WIDTH), random.nextInt(HEIGHT));
+                    random.nextInt(UPPERWIDTHOFROOM - 4) + 4,
+                    random.nextInt(WIDTH), random.nextInt(HEIGHT));
             count++;
         } while (checkCover(room) && count < MAXCOUNT);
         return count != MAXCOUNT ? room : null;
@@ -286,7 +292,8 @@ public class Game {
             yArr[1] = room.getyLeftBottomPoint() + room.getHeight() - 1 + 1;
             yArr[2] = item.getyLeftBottomPoint() - 1;
             yArr[3] = item.getyLeftBottomPoint() + item.getHeight() - 1 + 1;
-            if (!(xArr[0] > xArr[3] || xArr[2] > xArr[1] || yArr[0] > yArr[3] || yArr[2] > yArr[1])) {
+            if (!(xArr[0] > xArr[3] || xArr[2] > xArr[1] || yArr[0] > yArr[3]
+                    || yArr[2] > yArr[1])) {
                 return true;
             }
         }
