@@ -6,6 +6,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
     private int[][] grid;
     private WeightedQuickUnionUF unionUF;
+    private WeightedQuickUnionUF unionUF1;
     private int numOfOpenSites;
     private int[] dx = {-1, 0, 1, 0};
     private int[] dy = {0, -1, 0, 1};
@@ -25,6 +26,7 @@ public class Percolation {
         }
         //多出来的两个空间代表顶部和底部
         unionUF = new WeightedQuickUnionUF(N * N + 2);
+        unionUF1 = new WeightedQuickUnionUF(N * N);
         for (int i = 0; i < N; i++) {
             unionUF.union(N * N, getIndex(0, i));
         }
@@ -54,9 +56,10 @@ public class Percolation {
             if (newRow >= 0 && newRow < grid.length && newCol >= 0
                     && newCol < grid.length && grid[newRow][newCol] == 0) {
                 unionUF.union(getIndex(newRow, newCol), getIndex(row, col));
+                unionUF1.union(getIndex(newRow, newCol), getIndex(row, col));
+
             }
         }
-
     }
 
     // is the site (row, col) open?
@@ -69,7 +72,15 @@ public class Percolation {
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        return unionUF.connected(N * N, getIndex(row, col)) && grid[row][col] == 0;
+        if (grid[row][col] == -1) {
+            return false;
+        }
+        for (int i = 0; i < N; i++) {
+            if (unionUF1.connected(i, getIndex(row, col))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // number of open sites
