@@ -14,6 +14,7 @@ public class OomageTestUtility {
          */
         int[] nums = new int[M];
         for (int i = 0; i < oomages.size(); i++) {
+            int temp = oomages.get(i).hashCode();
             nums[((oomages.get(i).hashCode()) & 0x7fffffff) % M]++;
         }
         double lowLimit = oomages.size() / 50.0;

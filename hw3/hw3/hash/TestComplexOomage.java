@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -42,12 +43,23 @@ public class TestComplexOomage {
     @Test
     public void testWithDeadlyParams() {
         List<Oomage> deadlyList = new ArrayList<>();
+        deadlyList.add(new ComplexOomage(Arrays.asList(1)));
+        deadlyList.add(new ComplexOomage(Arrays.asList(2)));
+        deadlyList.add(new ComplexOomage(Arrays.asList(3)));
+        deadlyList.add(new ComplexOomage(Arrays.asList(4)));
+        deadlyList.add(new ComplexOomage(Arrays.asList(5)));
+        deadlyList.add(new ComplexOomage(Arrays.asList(6)));
+        deadlyList.add(new ComplexOomage(Arrays.asList(7)));
+        deadlyList.add(new ComplexOomage(Arrays.asList(8)));
+        deadlyList.add(new ComplexOomage(Arrays.asList(9)));
+        deadlyList.add(new ComplexOomage(Arrays.asList(0)));
 
         // Your code here.
         for (int i = 0; i < 10; i++) {
             List<Integer> ls = new ArrayList<>();
+            ls.add(new Random().nextInt(10));
             for (int j = 0; j < 6; j++) {
-                ls.add(new Random().nextInt(10));
+                ls.add(0);
             }
             deadlyList.add(new ComplexOomage(ls));
         }
