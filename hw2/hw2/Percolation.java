@@ -2,33 +2,38 @@ package hw2;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Percolation {
     private int[][] grid;
     private WeightedQuickUnionUF unionUF;
     private int numOfOpenSites;
-    private boolean isPercolates;
-    private List<int[]> fullSites;
     private int[] dx = {-1, 0, 1, 0};
     private int[] dy = {0, -1, 0, 1};
+    private int N;
 
     // create N-by-N grid, with all sites initially blocked
     public Percolation(int N) {
         if (N <= 0) {
             throw new IllegalArgumentException();
         }
+        this.N = N;
         grid = new int[N][N];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 grid[i][j] = -1;
             }
         }
-        unionUF = new WeightedQuickUnionUF(N * N);
+        //多出来的两个空间代表顶部和底部
+        unionUF = new WeightedQuickUnionUF(N * N + 2);
+        for (int i = 0; i < N; i++) {
+            unionUF.union(N * N, getIndex(0, i));
+        }
+        for (int i = 0; i < N; i++) {
+            unionUF.union(N * N + 1, getIndex(N - 1, i));
+        }
+
         numOfOpenSites = 0;
-        isPercolates = false;
-        fullSites = new ArrayList<>(N);
+
     }
 
     // open the site (row, col) if it is not open already
@@ -38,14 +43,11 @@ public class Percolation {
             throw new IndexOutOfBoundsException();
         }
 
-        if (isOpen(row, col)) {
+        if (grid[row][col] == 0) {
             return;
         }
         grid[row][col] = 0;
         numOfOpenSites++;
-        if (row == 0) {
-            fullSites.add(new int[]{row, col});
-        }
         for (int i = 0; i < 4; i++) {
             int newRow = row + dx[i];
             int newCol = col + dy[i];
@@ -67,12 +69,7 @@ public class Percolation {
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        for (int[] item : fullSites) {
-            if (unionUF.connected(getIndex(row, col), getIndex(item[0], item[1]))) {
-                return true;
-            }
-        }
-        return false;
+        return unionUF.connected(N * N, getIndex(row, col)) && grid[row][col] == 0;
     }
 
     // number of open sites
@@ -86,15 +83,7 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        if (isPercolates) {
-            return isPercolates;
-        }
-        for (int i = 0; i < grid.length; i++) {
-            if (isFull(grid.length - 1, i)) {
-                return true;
-            }
-        }
-        return false;
+        return unionUF.connected(N * N + 1, N * N);
     }
 
     public static void main(String[] args) {
