@@ -33,8 +33,13 @@ public class Percolation {
 
     // open the site (row, col) if it is not open already
     public void open(int row, int col) {
+        //System.out.println("haha");
         if (!(row >= 0 && row <= grid.length - 1 && col >= 0 && col <= grid.length - 1)) {
             throw new IndexOutOfBoundsException();
+        }
+
+        if (isOpen(row, col)) {
+            return;
         }
         grid[row][col] = 0;
         numOfOpenSites++;
@@ -49,9 +54,7 @@ public class Percolation {
                 unionUF.union(getIndex(newRow, newCol), getIndex(row, col));
             }
         }
-        if (isFull(row, col)) {
-            isPercolates = true;
-        }
+
     }
 
     // is the site (row, col) open?
@@ -83,7 +86,19 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        return isPercolates;
+        if (isPercolates) {
+            return isPercolates;
+        }
+        for (int i = 0; i < grid.length; i++) {
+            if (isFull(grid.length - 1, i)) {
+                return true;
+            }
+        }
+        return false;
     }
+
+    public static void main(String[] args) {
+
+    }   // use for unit testing (not required)
 
 }
