@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import lab9.MyHashMap;
 
+import java.util.Iterator;
+
 /**
  * Tests by Brendan Hu, Spring 2015, revised for 2018 by Josh Hug
  */
@@ -125,6 +127,33 @@ public class TestMyHashMap {
         studentIDs.put("evil alan", 345);
         assertEquals(345, studentIDs.get("evil alan").intValue());
         assertEquals(studentIDs.get("evil alan"), studentIDs.get("alan"));
+    }
+
+    @Test
+    public void testKeySet() {
+        MyHashMap<String, Integer> b = new MyHashMap<String, Integer>();
+        b.put("starChild", 5);
+        b.put("KISS", 5);
+        b.put("starChild1111", 5);
+        b.put("KISS2222", 5);
+        System.out.println(b.keySet());
+    }
+
+    @Test
+    public void testIterator() {
+        MyHashMap<String, Integer> b = new MyHashMap<String, Integer>();
+        b.put("starChild", 5);
+        b.put("KISS", 5);
+        b.put("starChild1111", 5);
+        b.put("KISS2222", 5);
+        Iterator<String> iterator = b.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+        System.out.println("-------------");
+        for (String s : b) {
+            System.out.println(s);
+        }
     }
 
     public static void main(String[] args) {
