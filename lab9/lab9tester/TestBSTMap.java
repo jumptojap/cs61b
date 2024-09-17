@@ -122,7 +122,7 @@ public class TestBSTMap {
         b.put("KISS1", 5);
         b.put("KISS2", 5);
         System.out.println(b.keySet());
-        b.remove("KISS");
+        b.remove("starChild", 5);
         System.out.println(b.keySet());
     }
 
