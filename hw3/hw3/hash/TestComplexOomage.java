@@ -1,13 +1,15 @@
 package hw3.hash;
 
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
+import java.util.Random;
 
 public class TestComplexOomage {
 
@@ -42,9 +44,13 @@ public class TestComplexOomage {
         List<Oomage> deadlyList = new ArrayList<>();
 
         // Your code here.
-        deadlyList.add(new ComplexOomage(Arrays.asList(1, 2, 1)));
-        deadlyList.add(new ComplexOomage(Arrays.asList(1, 2, 1)));
-        deadlyList.add(new ComplexOomage(Arrays.asList(1, 2, 1)));
+        for (int i = 0; i < 10; i++) {
+            List<Integer> ls = new ArrayList<>();
+            for (int j = 0; j < 6; j++) {
+                ls.add(new Random().nextInt(10));
+            }
+            deadlyList.add(new ComplexOomage(ls));
+        }
 
 
         assertTrue(OomageTestUtility.haveNiceHashCodeSpread(deadlyList, 10));
