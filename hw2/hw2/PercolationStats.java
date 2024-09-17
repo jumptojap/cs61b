@@ -12,6 +12,8 @@ public class PercolationStats {
         if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException();
         }
+        this.N = N;
+        this.T = T;
         percolationThreshold = new double[T];
         for (int i = 0; i < T; i++) {
             Percolation item = pf.make(N);

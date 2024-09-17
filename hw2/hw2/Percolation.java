@@ -78,7 +78,7 @@ public class Percolation {
     }           // number of open sites
 
     public boolean percolates() {
-        return conn.connected(N * N, N * N + 1);
+        return conn.connected(N * N, N * N + 1) && num != 0;
     }              // does the system percolate?
 
     public static void main(String[] args) {
