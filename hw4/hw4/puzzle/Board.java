@@ -65,6 +65,9 @@ public class Board implements WorldState {
         int res = 0;
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles.length; j++) {
+                if (tiles[i][j] == 0) {
+                    continue;
+                }
                 if (tiles[i][j] != i * tiles.length + j + 1) {
                     res++;
                 }
@@ -82,8 +85,7 @@ public class Board implements WorldState {
                 int row;
                 int col;
                 if (val == 0) {
-                    row = tiles.length - 1;
-                    col = tiles.length - 1;
+                    continue;
                 } else {
                     col = (val - 1) % tiles.length;
                     row = (val - 1) / tiles.length;

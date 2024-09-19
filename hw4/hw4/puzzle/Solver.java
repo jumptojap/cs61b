@@ -2,7 +2,11 @@ package hw4.puzzle;
 
 import edu.princeton.cs.algs4.MinPQ;
 
-import java.util.*;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
 
 /**
  * ClassName: Solver
@@ -83,7 +87,7 @@ public class Solver {
             }
             for (WorldState next : cur.state.neighbors()) {
                 Node temp = new Node(next, cur.moves + 1, cur);
-                if (!mp.containsKey(next) || mp.get(next) > temp.moves) { //|| mp.get(next) > temp.moves
+                if (!mp.containsKey(next) || mp.get(next) > temp.moves) {
                     mp.put(next, temp.moves);
                     pq.insert(temp);
                 }
