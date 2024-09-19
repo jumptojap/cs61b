@@ -67,12 +67,6 @@ public class Solver {
         if (results != null) {
             return results;
         }
-        if (initialState.isGoal()) {
-            results = new LinkedList<>();
-            results.addFirst(initialState);
-            numOfMove = 0;
-            return results;
-        }
         Node first = new Node(initialState, 0, null);
         MinPQ<Node> pq = new MinPQ<>();
         Map<WorldState, Integer> mp = new HashMap<>();
@@ -80,6 +74,7 @@ public class Solver {
         pq.insert(first);
         mp.put(initialState, 0);
         results = new LinkedList<>();
+
         while (!pq.isEmpty()) {
             Node cur = pq.delMin();
             if (cur.state.isGoal()) {
@@ -89,6 +84,7 @@ public class Solver {
                     results.addFirst(temp.state);
                     temp = temp.parent;
                 }
+                results.addFirst(initialState);
                 return results;
             }
             for (WorldState next : cur.state.neighbors()) {
