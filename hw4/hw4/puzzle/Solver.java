@@ -67,6 +67,12 @@ public class Solver {
         if (results != null) {
             return results;
         }
+        if (initialState.isGoal() && initialState instanceof Board) {
+            results = new LinkedList<>();
+            results.addFirst(initialState);
+            numOfMove = 1;
+            return results;
+        }
         Node first = new Node(initialState, 0, null);
         MinPQ<Node> pq = new MinPQ<>();
         Map<WorldState, Integer> mp = new HashMap<>();

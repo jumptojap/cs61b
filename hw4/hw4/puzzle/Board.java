@@ -3,6 +3,7 @@ package hw4.puzzle;
 import edu.princeton.cs.algs4.Queue;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Board implements WorldState {
     private int[][] tiles;
@@ -100,15 +101,16 @@ public class Board implements WorldState {
         return manhattan();
     }
 
-    public boolean equals(Object y) {
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles[i].length; j++) {
-                if (tiles[i][j] != ((Board) y).tileAt(i, j)) {
-                    return false;
-                }
-            }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-        return true;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Board board = (Board) o;
+        return Objects.deepEquals(tiles, board.tiles);
     }
 
     /**
