@@ -18,6 +18,7 @@ public class EightPuzzleSolver {
             }
         }
         Board initial = new Board(tiles);
+
         Solver solver = new Solver(initial);
         StdOut.println("Minimum number of moves = " + solver.moves());
         for (WorldState ws : solver.solution()) {

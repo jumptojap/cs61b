@@ -2,20 +2,31 @@ package hw4.puzzle;
 
 import edu.princeton.cs.algs4.Queue;
 
+import java.util.Arrays;
+
 public class Board implements WorldState {
     private int[][] tiles;
-    public Board(int[][] tiles){
-        this.tiles = tiles;
+
+    public Board(int[][] items) {
+        this.tiles = new int[items.length][items[0].length];
+        for (int i = 0; i < items.length; i++) {
+            for (int j = 0; j < items[i].length; j++) {
+                this.tiles[i][j] = items[i][j];
+            }
+        }
     }
-    public int tileAt(int i, int j){
-        if(i < 0 || i >= tiles.length || j < 0 || j >= tiles.length){
+
+    public int tileAt(int i, int j) {
+        if (i < 0 || i >= tiles.length || j < 0 || j >= tiles.length) {
             throw new IndexOutOfBoundsException();
         }
         return tiles[i][j];
     }
-    public int size(){
+
+    public int size() {
         return tiles.length;
     }
+
     public Iterable<WorldState> neighbors() {
         Queue<WorldState> neighbors = new Queue<>();
         int hug = size();
@@ -49,36 +60,48 @@ public class Board implements WorldState {
         }
         return neighbors;
     }
-    public int hamming(){
+
+    public int hamming() {
         int res = 0;
-        for(int i = 0; i < tiles.length; i++){
-            for(int j = 0; j < tiles.length; j++){
-                if(tiles[i][j] != i * tiles.length + j + 1){
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles.length; j++) {
+                if (tiles[i][j] != i * tiles.length + j + 1) {
                     res++;
                 }
             }
         }
         return res;
     }
-    public int manhattan(){
+
+    public int manhattan() {
         int res = 0;
-        for(int i = 0; i < tiles.length; i++){
-            for(int j = 0; j < tiles.length; j++){
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles.length; j++) {
                 int val = tileAt(i, j);
-                int row = val / tiles.length;
-                int col = val % tiles.length;
+
+                int row;
+                int col;
+                if (val == 0) {
+                    row = tiles.length - 1;
+                    col = tiles.length - 1;
+                } else {
+                    col = (val - 1) % tiles.length;
+                    row = (val - 1) / tiles.length;
+                }
                 res = res + Math.abs(row - i) + Math.abs(col - j);
             }
         }
         return res;
     }
-    public int estimatedDistanceToGoal(){
+
+    public int estimatedDistanceToGoal() {
         return manhattan();
     }
-    public boolean equals(Object y){
-        for(int i = 0; i < tiles.length; i++){
-            for(int j = 0; j < tiles[i].length; j++){
-                if(tiles[i][j] != ((Board)y).tileAt(i, j)){
+
+    public boolean equals(Object y) {
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
+                if (tiles[i][j] != ((Board) y).tileAt(i, j)) {
                     return false;
                 }
             }
@@ -86,15 +109,17 @@ public class Board implements WorldState {
         return true;
     }
 
-    /** Returns the string representation of the board. 
-      * Uncomment this method. */
+    /**
+     * Returns the string representation of the board.
+     * Uncomment this method.
+     */
     public String toString() {
         StringBuilder s = new StringBuilder();
         int N = size();
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                s.append(String.format("%2d ", tileAt(i,j)));
+                s.append(String.format("%2d ", tileAt(i, j)));
             }
             s.append("\n");
         }
@@ -102,4 +127,8 @@ public class Board implements WorldState {
         return s.toString();
     }
 
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(tiles);
+    }
 }
