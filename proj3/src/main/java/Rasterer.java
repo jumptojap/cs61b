@@ -8,14 +8,14 @@ import java.util.Map;
  * not draw the output correctly.
  */
 public class Rasterer {
-    private double[] LonArr;
+    private double[] lonArr;
 
     public Rasterer() {
         // YOUR CODE HERE
-        LonArr = new double[8];
-        LonArr[0] = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / 256;
-        for (int i = 1; i < LonArr.length; i++) {
-            LonArr[i] = LonArr[i - 1] / 2;
+        lonArr = new double[8];
+        lonArr[0] = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / 256;
+        for (int i = 1; i < lonArr.length; i++) {
+            lonArr[i] = lonArr[i - 1] / 2;
         }
 
     }
@@ -60,8 +60,6 @@ public class Rasterer {
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
         // System.out.println(params);
         Map<String, Object> results = new HashMap<>();
-       /* {"ullat", "ullon", "lrlat",
-                "lrlon", "w", "h"}*/
         double ullat = params.get("ullat");
         double ullon = params.get("ullon");
         double lrlat = params.get("lrlat");
@@ -74,8 +72,8 @@ public class Rasterer {
             results.put("query_success", false);
             return results;
         }
-        for (int i = 0; i < LonArr.length; i++) {
-            if (LonArr[i] <= targetLon) {
+        for (int i = 0; i < lonArr.length; i++) {
+            if (lonArr[i] <= targetLon) {
                 depth = i;
                 break;
             }
@@ -116,10 +114,4 @@ public class Rasterer {
 
 }
 
-class Test {
-    public static void main(String[] args) {
-        Rasterer rasterer = new Rasterer();
-        System.out.println(rasterer.checkOutOfRange(37.892195547244356, -122.2998046875, -100, -122.2998046875 + 1));
-        System.out.println(Math.pow(2, 4));
-    }
-}
+
