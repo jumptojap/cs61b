@@ -67,10 +67,10 @@ public class Solver {
         if (results != null) {
             return results;
         }
-        if (initialState.isGoal() && initialState instanceof Board) {
+        if (initialState.isGoal()) {
             results = new LinkedList<>();
             results.addFirst(initialState);
-            numOfMove = 1;
+            numOfMove = 0;
             return results;
         }
         Node first = new Node(initialState, 0, null);
