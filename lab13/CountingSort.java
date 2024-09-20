@@ -78,14 +78,15 @@ public class CountingSort {
             }
         }
         PriorityQueue<Integer> pq = new PriorityQueue<>(mp.keySet());
+        int[] res = new int[arr.length];
         int k = 0;
         while (!pq.isEmpty()) {
             int item = pq.poll();
             for (int i = 0; i < mp.get(item); i++) {
-                arr[k++] = item;
+                res[k++] = item;
             }
         }
 
-        return arr;
+        return res;
     }
 }

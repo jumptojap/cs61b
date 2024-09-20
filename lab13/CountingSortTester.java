@@ -56,8 +56,8 @@ public class CountingSortTester {
 
     @Test
     public void testRadixSort() {
-        String[] arr = {"a", "b", "c", "d", "e", "f", "g", "h", "aa", "bb", "cc", "dd"};
-        RadixSort.sort(arr);
+        String[] arr = {"2", "100", ""};
+        arr = RadixSort.sort(arr);
         for (String s : arr) {
             System.out.println(s);
         }

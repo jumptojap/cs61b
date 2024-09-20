@@ -18,11 +18,14 @@ public class RadixSort {
      */
     public static String[] sort(String[] asciis) {
         int maxLen = 0;
+        String[] temp = new String[asciis.length];
+        int index = 0;
         for (String s : asciis) {
             maxLen = Math.max(maxLen, s.length());
+            temp[index++] = s;
         }
-        sortHelperLSD(asciis, maxLen - 1);
-        return asciis;
+        sortHelperLSD(temp, maxLen - 1);
+        return temp;
     }
 
     /**
