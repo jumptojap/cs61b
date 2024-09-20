@@ -1,8 +1,11 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.PriorityQueue;
+
 /**
  * Class with 2 ways of doing Counting sort, one naive way and one "better" way
  *
  * @author Akhil Batra, Alexander Hwang
- *
  **/
 public class CountingSort {
     /**
@@ -66,7 +69,23 @@ public class CountingSort {
      * @param arr int array that will be sorted
      */
     public static int[] betterCountingSort(int[] arr) {
-        // TODO make counting sort work with arrays containing negative numbers.
-        return null;
+        Map<Integer, Integer> mp = new HashMap<Integer, Integer>();
+        for (int i : arr) {
+            if (!mp.containsKey(i)) {
+                mp.put(i, 1);
+            } else {
+                mp.put(i, mp.get(i) + 1);
+            }
+        }
+        PriorityQueue<Integer> pq = new PriorityQueue<>(mp.keySet());
+        int k = 0;
+        while (!pq.isEmpty()) {
+            int item = pq.poll();
+            for (int i = 0; i < mp.get(item); i++) {
+                arr[k++] = item;
+            }
+        }
+
+        return arr;
     }
 }

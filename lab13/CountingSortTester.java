@@ -1,4 +1,5 @@
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 public class CountingSortTester {
@@ -53,6 +54,14 @@ public class CountingSortTester {
         assertIsSorted(sortedSomeNegative);
     }
 
+    @Test
+    public void testRadixSort() {
+        String[] arr = {"a", "b", "c", "d", "e", "f", "g", "h", "aa", "bb", "cc", "dd"};
+        RadixSort.sort(arr);
+        for (String s : arr) {
+            System.out.println(s);
+        }
+    }
 
     public static void main(String[] args) {
         jh61b.junit.TestRunner.runTests(CountingSortTester.class);
