@@ -2,7 +2,11 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -58,7 +62,8 @@ public class GraphBuildingHandler extends DefaultHandler {
      *                   if Namespace processing is not being performed.
      * @param localName  The local name (without prefix), or the empty string if Namespace
      *                   processing is not being performed.
-     * @param qName      The qualified name (with prefix), or the empty string if qualified names are
+     * @param qName      The qualified name (with prefix), or the empty string
+     *                   if qualified names are
      *                   not available. This tells us which element we're looking at.
      * @param attributes The attributes attached to the element. If there are no attributes, it
      *                   shall be an empty Attributes object.
