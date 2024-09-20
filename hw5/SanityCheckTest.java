@@ -29,6 +29,12 @@ public class SanityCheckTest {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
                 energy[i][j] = sc.energy(i, j);
+                //assertEquals(energy[i][j], exampleEnergy[j][i], 1e-3);
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                //energy[i][j] = sc.energy(i, j);
                 assertEquals(energy[i][j], exampleEnergy[j][i], 1e-3);
             }
         }
