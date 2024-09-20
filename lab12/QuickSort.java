@@ -74,19 +74,26 @@ public class QuickSort {
         Queue<Item> equal = new Queue<>();
         Queue<Item> greater = new Queue<>();
         partition(items, pivot, less, equal, greater);
-        quickSort(less);
-        quickSort(greater);
+        less = quickSort(less);
+        greater = quickSort(greater);
         Queue<Item> catenate = catenate(catenate(less, equal), greater);
         return catenate;
     }
 
     public static void main(String[] args) {
         Queue<Integer> students = new Queue<Integer>();
-        students.enqueue(8);
-        students.enqueue(4);
-        students.enqueue(333);
-        students.enqueue(33223);
+        students.enqueue(0);
+        students.enqueue(1);
         students.enqueue(3);
+        students.enqueue(3);
+        students.enqueue(3);
+        students.enqueue(8);
+        students.enqueue(8);
+        students.enqueue(9);
+        students.enqueue(9);
+        students.enqueue(4);
+
+
         Queue<Integer> res = QuickSort.quickSort(students);
         for (Integer student : res) {
             System.out.println(student);
