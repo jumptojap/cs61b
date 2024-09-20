@@ -1,5 +1,4 @@
 import edu.princeton.cs.algs4.Picture;
-
 /**
  * ClassName: SeamCarver
  * Package: PACKAGE_NAME
@@ -13,7 +12,7 @@ public class SeamCarver {
     private Picture pic;
     int[][][] rgb;
 
-    public SeamCarver(edu.princeton.cs.algs4.Picture picture) {
+    public SeamCarver(Picture picture) {
         this.pic = picture;
         rgb = new int[picture.height()][picture.width()][3];
         for (int i = 0; i < picture.height(); i++) {
@@ -41,10 +40,12 @@ public class SeamCarver {
         double energyX = 0;
         double energyY = 0;
         for (int k = 0; k < 3; k++) {
-            energyX = energyX + Math.pow(rgb[y][(x + 1) % width()][k] - rgb[y][(x - 1 + width()) % width()][k], 2);
+            energyX = energyX + Math.pow(rgb[y][(x + 1) % width()][k]
+                    - rgb[y][(x - 1 + width()) % width()][k], 2);
         }
         for (int k = 0; k < 3; k++) {
-            energyY = energyY + Math.pow(rgb[(y + 1) % height()][x][k] - rgb[(y - 1 + height()) % height()][x][k], 2);
+            energyY = energyY + Math.pow(rgb[(y + 1) % height()][x][k]
+                    - rgb[(y - 1 + height()) % height()][x][k], 2);
         }
         return energyX + energyY;
     }
