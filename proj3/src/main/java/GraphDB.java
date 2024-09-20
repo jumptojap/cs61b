@@ -6,7 +6,14 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -202,7 +209,8 @@ public class GraphDB {
         PriorityQueue<Node> pq = new PriorityQueue<>(new Comparator<Node>() {
             @Override
             public int compare(Node o1, Node o2) {
-                return Double.compare(distance(o1.lon, o1.lat, lon, lat), distance(o2.lon, o2.lat, lon, lat));
+                return Double.compare(distance(o1.lon, o1.lat, lon, lat),
+                    distance(o2.lon, o2.lat, lon, lat));
             }
         });
         for (Long node : set) {

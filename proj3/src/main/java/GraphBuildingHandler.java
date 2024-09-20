@@ -4,6 +4,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.*;
 
+
 /**
  * Parses OSM XML files using an XML SAX parser. Used to construct the graph of roads for
  * pathfinding, under some constraints.
@@ -31,7 +32,8 @@ public class GraphBuildingHandler extends DefaultHandler {
      * actually drive on them.
      */
     private static final Set<String> ALLOWED_HIGHWAY_TYPES =
-            new HashSet<>(Arrays.asList("motorway", "trunk", "primary", "secondary", "tertiary", "unclassified",
+            new HashSet<>(Arrays.asList("motorway", "trunk", "primary", "secondary", "tertiary",
+            "unclassified",
             "residential", "living_street", "motorway_link", "trunk_link", "primary_link",
             "secondary_link", "tertiary_link"));
     private String activeState = "";
@@ -50,10 +52,9 @@ public class GraphBuildingHandler extends DefaultHandler {
     }
 
     /**
-     * Called at the beginning of an element. Typically, you will want to handle each element in
-     * here, and you may want to track the parent element.
      *
-     * @param uri        The Namespace URI, or the empty string if the element has no Namespace URI or
+     * @param uri        The Namespace URI, or the empty string if the element has no
+     *                   Namespace URI or
      *                   if Namespace processing is not being performed.
      * @param localName  The local name (without prefix), or the empty string if Namespace
      *                   processing is not being performed.
@@ -74,7 +75,8 @@ public class GraphBuildingHandler extends DefaultHandler {
 
             nodeId = Long.parseLong(attributes.getValue("id"));
             GraphDB.Node n = new GraphDB.Node(Long.parseLong(attributes.getValue("id")),
-                    Double.parseDouble(attributes.getValue("lon")), Double.parseDouble(attributes.getValue("lat")));
+                    Double.parseDouble(attributes.getValue("lon")),
+                    Double.parseDouble(attributes.getValue("lat")));
             g.addNode(n);
             /*  Use the above information to save a "node" to somewhere. */
             /* Hint: A graph-like structure would be nice. */
@@ -123,19 +125,7 @@ public class GraphBuildingHandler extends DefaultHandler {
         }
     }
 
-    /**
-     * Receive notification of the end of an element. You may want to take specific terminating
-     * actions here, like finalizing vertices or edges found.
-     *
-     * @param uri       The Namespace URI, or the empty string if the element has no Namespace URI or
-     *                  if Namespace processing is not being performed.
-     * @param localName The local name (without prefix), or the empty string if Namespace
-     *                  processing is not being performed.
-     * @param qName     The qualified name (with prefix), or the empty string if qualified names are
-     *                  not available.
-     * @throws SAXException Any SAX exception, possibly wrapping another exception.
-     */
-    @Override
+
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equals("way")) {
             /* We are done looking at a way. (We finished looking at the nodes, speeds, etc...)*/

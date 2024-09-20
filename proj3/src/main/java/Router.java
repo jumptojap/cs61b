@@ -76,8 +76,10 @@ public class Router {
             }
             Iterable<Long> adjacent = g.adjacent(curr.node.id);
             for (Long adj : adjacent) {
-                if (!distances.containsKey(adj) || distances.get(adj) > curr.g + g.distance(adj, curr.node.id)) {
-                    pq.add(new Item(g.nodes.get(adj), curr.g + g.distance(adj, curr.node.id), curr, dest, g));
+                if (!distances.containsKey(adj) || distances.get(adj) > curr.g
+                    + g.distance(adj, curr.node.id)) {
+                    pq.add(new Item(g.nodes.get(adj), curr.g
+                        + g.distance(adj, curr.node.id), curr, dest, g));
                     distances.put(adj, curr.g + g.distance(adj, curr.node.id));
                 }
             }
