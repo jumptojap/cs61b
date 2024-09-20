@@ -1,4 +1,7 @@
 import edu.princeton.cs.algs4.Picture;
+
+import java.awt.Color;
+
 /**
  * ClassName: SeamCarver
  * Package: PACKAGE_NAME
@@ -10,45 +13,47 @@ import edu.princeton.cs.algs4.Picture;
  */
 public class SeamCarver {
     private Picture pic;
-    int[][][] rgb;
+    //int[][][] rgb;
 
     public SeamCarver(Picture picture) {
         this.pic = picture;
-        rgb = new int[picture.height()][picture.width()][3];
-        for (int i = 0; i < picture.height(); i++) {
-            for (int j = 0; j < picture.width(); j++) {
-                rgb[i][j][0] = (pic.getRGB(j, i) >> 16) & 0xFF;
-                rgb[i][j][1] = (pic.getRGB(j, i) >> 8) & 0xFF;
-                rgb[i][j][2] = (pic.getRGB(j, i) >> 0) & 0xFF;
-            }
-        }
     }
 
     public Picture picture() {
         return pic;
     }
+
     public int width() {
         return pic.width();
     }
+
     public int height() {
         return pic.height();
     }
+
     public double energy(int x, int y) {
-        if (x < 0 || y < 0 || x >= pic.width() || y >= pic.height()) {
+        if (x < 0 || x > width() - 1 || y < 0 || y > height() - 1) {
             throw new IndexOutOfBoundsException();
         }
-        double energyX = 0;
-        double energyY = 0;
-        for (int k = 0; k < 3; k++) {
-            energyX = energyX + Math.pow(rgb[y][(x + 1) % width()][k]
-                    - rgb[y][(x - 1 + width()) % width()][k], 2);
-        }
-        for (int k = 0; k < 3; k++) {
-            energyY = energyY + Math.pow(rgb[(y + 1) % height()][x][k]
-                    - rgb[(y - 1 + height()) % height()][x][k], 2);
-        }
-        return energyX + energyY;
+
+        double deltaXSquare;
+        double deltaYSquare;
+
+        Color left = pic.get(Math.floorMod(x - 1, width()), y);
+        Color right = pic.get(Math.floorMod(x + 1, width()), y);
+        deltaXSquare = (left.getRed() - right.getRed()) * (left.getRed() - right.getRed())
+                + (left.getGreen() - right.getGreen()) * (left.getGreen() - right.getGreen())
+                + (left.getBlue() - right.getBlue()) * (left.getBlue() - right.getBlue());
+
+        Color above = pic.get(x, Math.floorMod(y - 1, height()));
+        Color below = pic.get(x, Math.floorMod(y + 1, height()));
+        deltaYSquare = (above.getRed() - below.getRed()) * (above.getRed() - below.getRed())
+                + (above.getGreen() - below.getGreen()) * (above.getGreen() - below.getGreen())
+                + (above.getBlue() - below.getBlue()) * (above.getBlue() - below.getBlue());
+
+        return deltaXSquare + deltaYSquare;
     }
+
     private boolean check1(int i) {
         return i >= 0 && i < height();
     }
@@ -90,6 +95,7 @@ public class SeamCarver {
         return seam;
 
     }
+
     private boolean check(int i) {
         return i >= 0 && i < pic.width();
     }
@@ -147,6 +153,7 @@ public class SeamCarver {
         }
         SeamRemover.removeHorizontalSeam(pic, seam);
     }
+
     public void removeVerticalSeam(int[] seam) {
         if (seam.length != height() || !checkSeam(seam)) {
             throw new IllegalArgumentException();
