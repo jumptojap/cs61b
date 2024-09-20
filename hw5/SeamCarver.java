@@ -16,7 +16,7 @@ public class SeamCarver {
     //int[][][] rgb;
 
     public SeamCarver(Picture picture) {
-        this.pic = picture;
+        this.pic = new Picture(picture);
     }
 
     public Picture picture() {
