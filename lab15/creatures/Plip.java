@@ -1,12 +1,13 @@
 package creatures;
-
 import huglife.Creature;
 import huglife.Direction;
 import huglife.Action;
 import huglife.Occupant;
+import huglife.HugLifeUtils;
 
 import java.awt.Color;
-import java.util.*;
+import java.util.Map;
+import java.util.List;
 
 /**
  * An implementation of a motile pacifist photosynthesizer.
@@ -36,7 +37,7 @@ public class Plip extends Creature {
         r = 99;
         g = 0;
         b = 76;
-        energy = e > 2 ? 2 : e;
+        energy = e;
     }
 
     /**
@@ -55,8 +56,12 @@ public class Plip extends Creature {
      * that you get this exactly correct.
      */
     public Color color() {
-        g = (int) (63 + (255 - 63) * (energy / 2));
+        g = getGreen();
         return color(r, g, b);
+    }
+
+    private int getGreen() {
+        return (int) Math.round(energy * 96) + 63;
     }
 
     /**
@@ -71,7 +76,7 @@ public class Plip extends Creature {
      * private static final variable. This is not required for this lab.
      */
     public void move() {
-        energy = energy - 0.15;
+        energy -= 0.15;
     }
 
 
@@ -79,8 +84,8 @@ public class Plip extends Creature {
      * Plips gain 0.2 energy when staying due to photosynthesis.
      */
     public void stay() {
-        energy = energy + 0.2 > 2 ? 2 : energy + 0.2;
-
+        energy += 0.2;
+        energy = Math.min(2, energy);
     }
 
     /**
@@ -89,8 +94,8 @@ public class Plip extends Creature {
      * Plip.
      */
     public Plip replicate() {
-        energy = energy / 2;
-        return new Plip(this.energy);
+        energy *= 0.5;
+        return new Plip(energy);
     }
 
     /**
@@ -104,65 +109,21 @@ public class Plip extends Creature {
      * scoop on how Actions work. See SampleCreature.chooseAction()
      * for an example to follow.
      */
-    private boolean check(Collection<Occupant> occupants) {
-        for (Occupant occupant : occupants) {
-            if ("clorus".equals(occupant.name())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean checkEmpty(Collection<Occupant> occupants) {
-        for (Occupant occupant : occupants) {
-            if ("empty".equals(occupant.name())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public Action chooseAction(Map<Direction, Occupant> neighbors) {
-        Set<Direction> directions = neighbors.keySet();
-        List<Direction> randomList = new ArrayList<>(directions);
-        Collection<Occupant> values = neighbors.values();
-        if (!checkEmpty(values)) {
-            stay();
+        List<Direction> empties = getNeighborsOfType(neighbors, "empty");
+        List<Direction> cloruses = getNeighborsOfType(neighbors, "clorus");
+        if (empties.size() == 0) {
             return new Action(Action.ActionType.STAY);
-        } else if (energy > 1.0) {
-
-            Iterator<Direction> iterator = directions.iterator();
-            Direction direction = null;
-            while (iterator.hasNext()) {
-                direction = iterator.next();
-                if ("empty".equals(neighbors.get(direction).name())) {
-                    break;
-                }
-            }
-            neighbors.put(direction, replicate());
-            return new Action(Action.ActionType.REPLICATE, direction);
-        } else if (check(values)) {
-            Random rand = new Random();
-            if (rand.nextInt(2) == 0) {
-                stay();
-                return new Action(Action.ActionType.STAY);
-            } else {
-                List<Direction> directionList = new ArrayList<>();
-                for (Direction d : Direction.values()) {
-                    if ("empty".equals(neighbors.get(d).name())) {
-                        directionList.add(d);
-                    }
-                }
-                Random rand1 = new Random();
-                int index = rand1.nextInt(directionList.size());
-
-                move();
-                return new Action(Action.ActionType.MOVE, directionList.get(index));
-            }
-        } else {
-            stay();
-            return new Action(Action.ActionType.STAY);
+        } else if (energy >= 1.0) {
+            return new Action(Action.ActionType.REPLICATE, HugLifeUtils.randomEntry(empties));
+        } else if (cloruses.size() != 0) {
+            return new Action(Action.ActionType.MOVE, HugLifeUtils.randomEntry(empties));
         }
+        return new Action(Action.ActionType.STAY);
     }
 
+    @Override
+    public String name() {
+        return super.name();
+    }
 }
