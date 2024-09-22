@@ -24,12 +24,22 @@ public class Tries {
     }
 
     private Node root = new Node();
-
+    private boolean check(char c) {
+        if(c >= 'z' && c <= 'z') {
+            return true;
+        }
+        if(c >= 'A' && c <= 'Z') {
+            return true;
+        }
+        return c == ' ';
+    }
     public void insert(String word) {
         Node curr = root;
+        String temp = "";
         for (int i = 0; i < word.length(); i++) {
             if (!curr.map.containsKey(word.charAt(i))) {
-                curr.map.put(word.charAt(i), new Node(curr.word + word.charAt(i)));
+                curr.map.put(word.charAt(i), new Node(curr.word + temp + word.charAt(i)));
+                temp = "";
             }
             curr = curr.map.get(word.charAt(i));
         }
