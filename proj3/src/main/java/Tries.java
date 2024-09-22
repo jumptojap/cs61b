@@ -55,8 +55,27 @@ public class Tries {
     private char reverseChar(char c) {
         if (c >= 'a' && c <= 'z') {
             return (char) (c + 'A' - 'a');
+        } else if (c == ' ') {
+            return c;
         } else {
             return (char) (c - 'A' + 'a');
+        }
+    }
+
+    private void dfs(String word, int i, List<Node> list, Node curr) {
+        if (i == word.length()) {
+            list.add(curr);
+            return;
+        }
+        if (!curr.map.containsKey(word.charAt(i))
+                && !curr.map.containsKey(reverseChar(word.charAt(i)))) {
+            return;
+        }
+        if (curr.map.containsKey(word.charAt(i))) {
+            dfs(word, i + 1, list, curr.map.get(word.charAt(i)));
+        }
+        if (curr.map.containsKey(reverseChar(word.charAt(i)))) {
+            dfs(word, i + 1, list, curr.map.get(reverseChar(word.charAt(i))));
         }
 
     }
@@ -65,19 +84,12 @@ public class Tries {
         start = toCorrectString(start);
         List<String> res = new ArrayList<String>();
         Node curr = root;
-        for (int i = 0; i < start.length(); i++) {
-            if (!curr.map.containsKey(start.charAt(i))
-                    && !curr.map.containsKey(reverseChar(start.charAt(i)))) {
-                return res;
-            }
-            if (curr.map.containsKey(start.charAt(i))) {
-                curr = curr.map.get(start.charAt(i));
-            } else {
-                curr = curr.map.get(reverseChar(start.charAt(i)));
-            }
-        }
+        List<Node> list = new ArrayList<>();
+        dfs(start, 0, list, curr);
         Queue<Node> queue = new LinkedList<>();
-        queue.offer(curr);
+        for (Node node : list) {
+            queue.offer(node);
+        }
         while (!queue.isEmpty()) {
             Node poll = queue.poll();
             if (poll.isEnd) {
