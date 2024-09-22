@@ -123,6 +123,7 @@ public class GraphBuildingHandler extends DefaultHandler {
                 && attributes.getValue("k").equals("name")) {
             /* While looking at a node, we found a <tag...> with k="name". */
             /* Create a location. */
+
             g.setNodeName(nodeId, attributes.getValue("v"));
             /* Hint: Since we found this <tag...> INSIDE a node, we should probably remember which
             node this tag belongs to. Remember XML is parsed top-to-bottom, so probably it's the

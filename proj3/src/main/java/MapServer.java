@@ -4,12 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -91,6 +86,7 @@ public class MapServer {
     private static Rasterer rasterer;
     private static GraphDB graph;
     private static List<Long> route = new LinkedList<>();
+    private static Map<String, GraphDB.Node> nameList = new HashMap<>();
     /* Define any static variables here. Do not define any instance variables of MapServer. */
 
 
@@ -99,9 +95,17 @@ public class MapServer {
      * Do not place it in the main function. Do not place initialization code anywhere else.
      * This is for testing purposes, and you may fail tests otherwise.
      **/
+    private static Tries tries = new Tries();
+
     public static void initialize() {
         graph = new GraphDB(OSM_DB_PATH);
         rasterer = new Rasterer();
+        for (GraphDB.Node n : graph.nodesFull.values()) {
+            if (n.name != null) {
+                nameList.put(n.name, n);
+                tries.insert(n.name);
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -298,7 +302,9 @@ public class MapServer {
      * cleaned <code>prefix</code>.
      */
     public static List<String> getLocationsByPrefix(String prefix) {
-        return new LinkedList<>();
+        //System.out.println("搜索"+ prefix);
+        List<String> strings = tries.find(prefix);
+        return strings;
     }
 
     /**
@@ -315,7 +321,18 @@ public class MapServer {
      * "id" : Number, The id of the node. <br>
      */
     public static List<Map<String, Object>> getLocations(String locationName) {
-        return new LinkedList<>();
+        List<String> list = getLocationsByPrefix(locationName);
+        List<Map<String, Object>> locations = new ArrayList<Map<String, Object>>();
+        for (String item : list) {
+            Map<String, Object> map = new HashMap<>();
+            GraphDB.Node n = nameList.get(item);
+            map.put("name", n.name);
+            map.put("lon", n.lon);
+            map.put("lat", n.lat);
+            map.put("id", n.id);
+            locations.add(map);
+        }
+        return locations;
     }
 
     /**

@@ -6,14 +6,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -26,6 +19,7 @@ import java.util.Set;
  */
 public class GraphDB {
     final Map<Long, Node> nodes = new LinkedHashMap<>();
+    final Map<Long, Node> nodesFull = new LinkedHashMap<>();
 
     static class Node {
         long id;
@@ -45,6 +39,7 @@ public class GraphDB {
         }
 
         public void setName(String name) {
+            System.out.println(id +  " " + name);
             this.name = name;
         }
 
@@ -87,6 +82,10 @@ public class GraphDB {
             saxParser.parse(inputStream, gbh);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
+        }
+        for (long id : nodes.keySet()) {
+            Node n = nodes.get(id);
+            nodesFull.put(id, n);
         }
         clean();
     }
