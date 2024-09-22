@@ -20,7 +20,8 @@ import java.util.*;
 public class GraphDB {
     final Map<Long, Node> nodes = new LinkedHashMap<>();
     final Map<Long, Node> nodesFull = new LinkedHashMap<>();
-
+    Tries tries = new Tries();
+    Map<String, Node> nameList = new LinkedHashMap<>();
     static class Node {
         long id;
         double lon;
@@ -43,6 +44,39 @@ public class GraphDB {
             this.name = name;
         }
 
+    }
+    public List<String> getLocationsByPrefix(String prefix) {
+        //System.out.println("搜索"+ prefix);
+        List<String> strings = tries.find(prefix);
+        return strings;
+    }
+
+    /**
+     * Collect all locations that match a cleaned <code>locationName</code>, and return
+     * information about each node that matches.
+     *
+     * @param locationName A full name of a location searched for.
+     * @return A list of locations whose cleaned name matches the
+     * cleaned <code>locationName</code>, and each location is a map of parameters for the Json
+     * response as specified: <br>
+     * "lat" : Number, The latitude of the node. <br>
+     * "lon" : Number, The longitude of the node. <br>
+     * "name" : String, The actual name of the node. <br>
+     * "id" : Number, The id of the node. <br>
+     */
+    public List<Map<String, Object>> getLocations(String locationName) {
+        List<String> list = getLocationsByPrefix(locationName);
+        List<Map<String, Object>> locations = new ArrayList<Map<String, Object>>();
+        for (String item : list) {
+            Map<String, Object> map = new HashMap<>();
+            GraphDB.Node n = nameList.get(item);
+            map.put("name", n.name);
+            map.put("lon", n.lon);
+            map.put("lat", n.lat);
+            map.put("id", n.id);
+            locations.add(map);
+        }
+        return locations;
     }
 
     void setNodeName(Long id, String name) {
@@ -86,6 +120,12 @@ public class GraphDB {
         for (long id : nodes.keySet()) {
             Node n = nodes.get(id);
             nodesFull.put(id, n);
+        }
+        for (GraphDB.Node n : nodesFull.values()) {
+            if (n.name != null) {
+                nameList.put(n.name, n);
+                tries.insert(n.name);
+            }
         }
         clean();
     }
